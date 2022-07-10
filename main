@@ -1,0 +1,63 @@
+//initialize sonic function.
+int sonicScan(int trig, int echo) {
+  
+  // initializations.
+  pinMode(trig, OUTPUT);
+  float duration;
+  float distance;
+
+
+  //sound propagation and detection.
+  delay(11);
+  digitalWrite(trig, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trig, LOW);
+
+
+  //processing.
+  duration = pulseIn(echo, HIGH);
+  Serial.println(duration);
+  duration -= 5; // subtract irrelevant pulse time.
+  distance = (((340 * duration) * 100) / 2) / 1000000; // get distance,  convert to cm, divide by 2 to get actual distance, divide by one million to convert microsec to sec.
+  return round(distance - 1);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int blue = 7;
+int red = 8;
+int green = 10;
+int trig_ = 2;
+int echo_ = 3;
+int distance_;
+
+
+void setup() {
+  Serial.begin(9600);
+
+}
+
+void loop() {
+
+
+  distance_ = sonicScan(trig_, echo_);
+  
+
+  if (distance_ < 500) {}
+   
+
+}
