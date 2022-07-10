@@ -6,7 +6,6 @@ int sonicScan(int trig, int echo) {
   float duration;
   float distance;
 
-
   //sound propagation and detection.
   delay(11);
   digitalWrite(trig, LOW);
@@ -14,7 +13,6 @@ int sonicScan(int trig, int echo) {
   digitalWrite(trig, HIGH);
   delayMicroseconds(5);
   digitalWrite(trig, LOW);
-
 
   //processing.
   duration = pulseIn(echo, HIGH);
@@ -25,16 +23,17 @@ int sonicScan(int trig, int echo) {
   }
 
 
+
 //Initialize function two, average of three sonicScan, avgScan function.
 int avgScan() {
 
-
-  // taking three distance reading, choosing by frequency.
   int trig_ = 2;
   int echo_ = 3;
   int distance1;
   int distance2;
   int distance3;
+  
+  // taking three distance reading, choosing by frequency.
   distance1 = sonicScan(trig_, echo_);
   delay(5);
   distance2 = sonicScan(trig_, echo_);
