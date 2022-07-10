@@ -26,7 +26,7 @@ int sonicScan(int trig, int echo) {
 
 
 //Initialize function two, average of three sonicScan, avgScan function.
-
+int avgScan() {}
 
 
 
