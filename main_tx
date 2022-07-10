@@ -66,29 +66,28 @@ int full;
 
 void setup() {
   Serial.begin(9600);
+  
 }
 
 
 
 
 void loop() {
-
-  // taking three distance reading, choosing by frequency.
-  // This part ideally should be made into a function.
-
+  
+  
   distance_ = avgScan();
 
   //wont pump water till the low mark.
   if (distance_ > empty) {
-    //code to switch relay on and then off will go here later.
+    //code to send 'empty' to rx unit will go here soon.
     distance_ = avgScan();
     
     if (distance_ > mid) {
-      //code to switch relay on and then off will go here soon.
+      //code to switch send 'mid' to rx unit will go here soon.
       distance_ = avgScan();
       
       if (distance_ > full){
-        //code to switch relay on and then off
+        //code to send 'full' to rx unit will go here soon.
       }
     }
   }
