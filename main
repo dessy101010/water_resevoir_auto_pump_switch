@@ -32,17 +32,14 @@ int sonicScan(int trig, int echo) {
 
 
 
-
-
-
-
-
+//main code.
 
 int blue = 7;
 int red = 8;
 int green = 10;
 int trig_ = 2;
 int echo_ = 3;
+int distance_;
 int distance1;
 int distance2;
 int distance3;
@@ -61,7 +58,7 @@ void loop() {
   distance2 = sonicScan(trig_, echo_);
   delay(5);
   distance3 = sonicScan(trig_, echo_);
-  
+  distance_ = (distance1 + distance2 + distance3)/3  //average distance reading.
   
 
   if (distance_ < 500) {}
