@@ -1,4 +1,4 @@
-//initialize sonic function.
+//initialize function one, sonicScan function.
 int sonicScan(int trig, int echo) {
   
   // initializations.
@@ -25,6 +25,9 @@ int sonicScan(int trig, int echo) {
   }
 
 
+//Initialize function two, average of three sonicScan, avgScan function.
+
+
 
 
 
@@ -34,15 +37,18 @@ int sonicScan(int trig, int echo) {
 
 //main code.
 
-int blue = 7;
-int red = 8;
-int green = 10;
+//int blue = 7;
+//int red = 8;
+//int green = 10;
+
+
 int trig_ = 2;
 int echo_ = 3;
 int distance_;
 int distance1;
 int distance2;
 int distance3;
+
 
 
 void setup() {
@@ -53,6 +59,8 @@ void setup() {
 void loop() {
 
   // taking three distance reading, choosing by frequency.
+  // This part ideally should be made into a function.
+
   distance1 = sonicScan(trig_, echo_);
   delay(5);
   distance2 = sonicScan(trig_, echo_);
@@ -61,7 +69,11 @@ void loop() {
   distance_ = (distance1 + distance2 + distance3)/3  //average distance reading.
   
 
-  if (distance_ < 500) {}
+
+  if (distance_ > 100) {
+  
+  
+  }
    
 
 }
