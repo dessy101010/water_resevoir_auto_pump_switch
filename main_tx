@@ -58,9 +58,10 @@ int avgScan() {
 
 
 int distance_;
-int empty;
-int mid;
-int full;
+String empty;
+String mid;
+String full;
+String sleep;
 
 
 
@@ -91,4 +92,7 @@ void loop() {
       }
     }
   }
+
+
+  // Send sleep instruct to rx, and go to watchdog routine. 
 }
