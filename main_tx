@@ -76,15 +76,15 @@ void loop() {
 
   //wont pump water till the low mark.
   if (distance_ > empty) {
-    //code to send 'empty' to rx unit will go here soon.
+    //code to send 'E' to rx unit will go here soon.
     distance_ = avgScan();
     
     if (distance_ > mid) {
-      //code to switch send 'mid' to rx unit will go here soon.
+      //code to switch send 'M' to rx unit will go here soon.
       distance_ = avgScan();
       
       if (distance_ > full){
-        //code to send 'full' to rx unit will go here soon.
+        //code to send 'F' to rx unit will go here soon.
       }
     }
   }
