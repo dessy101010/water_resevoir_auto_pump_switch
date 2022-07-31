@@ -51,10 +51,6 @@ int avgScan() {
 
 //main code.
 
-//int blue = 7;
-//int red = 8;
-//int green = 10;
-
 
 
 int distance_;
