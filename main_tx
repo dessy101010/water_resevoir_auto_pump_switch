@@ -98,7 +98,9 @@ void loop() {
   
     WDTCSR = B00000000;          //DISABLE WATCHDOG FOR PUMP ROUTINE, ALSO DISABLE SLEEP.
     SMCR = B00000000;
+    
     //code to send 'E' to rx unit will go here soon.
+    
     distance_ = avgScan();
     
     if (distance_ >= mid) {
