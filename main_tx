@@ -64,6 +64,10 @@ String sleep;
 void setup() {
   Serial.begin(9600);
   
+  //BIAS PINS TO SAVE POWER.
+  for(int i=0; i<20; i++){
+    pinMode(i, OUTPUT);
+    }
   //DISABLE ADC.
   ADCSRA = B01111111;       //CLEAR BIT ADC ENABLE.  //ADCSRA &= ~(1<<7);
 
@@ -92,7 +96,8 @@ void loop() {
   //wont pump water till the low mark.
   if (distance_ >= empty) {
   
-    WDTCSR = B00000000;              //DISABLE WATCHDOG FOR PUMP ROUTINE, ALSO DISABLE SLEEP.
+    WDTCSR = B00000000;          //DISABLE WATCHDOG FOR PUMP ROUTINE, ALSO DISABLE SLEEP.
+    SMCR = B00000000;
     //code to send 'E' to rx unit will go here soon.
     distance_ = avgScan();
     
@@ -121,7 +126,4 @@ void loop() {
     
     
     }
-
-
-  // Send sleep instruct to rx, and go to watchdog routine. 
 }
