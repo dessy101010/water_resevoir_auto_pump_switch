@@ -64,6 +64,21 @@ String sleep;
 void setup() {
   Serial.begin(9600);
   
+  //DISABLE ADC.
+  ADCSRA = B01111111;       //CLEAR BIT ADC ENABLE.  //ADCSRA &= ~(1<<7);
+
+
+  //ENABLE SLEEP PENDING SLEEP INSTRUCTION.
+  SMCR |= (1<<2);           //POWERDOWN MODE.
+  SMCR |= 1;                //ENABLE SLEEP.
+  __asm__ __volatile("sei");
+
+  
+  //SETUP WACHDOG TIMER.
+  WDTCSR = 24;              //CHANGE ENABLE(WDCE) BIT AND WDE BIT.
+  WDTCSR = 0x21;            //PRESCALER CHOICE - GET RID OF WDE AND WDCE.
+  WDTCSR |= (1<<6);         //ENABLE INTERRUPT MODE.
+  
 }
 
 
@@ -75,11 +90,13 @@ void loop() {
   distance_ = avgScan();
 
   //wont pump water till the low mark.
-  if (distance_ > empty) {
+  if (distance_ >= empty) {
+  
+    WDTCSR = 24;              //DISABLE WATCHDOG FOR PUMP ROUTINE.
     //code to send 'E' to rx unit will go here soon.
     distance_ = avgScan();
     
-    if (distance_ > mid) {
+    if (distance_ >= mid) {
       //code to switch send 'M' to rx unit will go here soon.
       distance_ = avgScan();
       
@@ -88,6 +105,10 @@ void loop() {
       }
     }
   }
+  else if(distance_ < empty){
+    
+    
+    }
 
 
   // Send sleep instruct to rx, and go to watchdog routine. 
