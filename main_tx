@@ -92,7 +92,7 @@ void loop() {
   //wont pump water till the low mark.
   if (distance_ >= empty) {
   
-    WDTCSR = 24;              //DISABLE WATCHDOG FOR PUMP ROUTINE.
+    WDTCSR = B00000000;              //DISABLE WATCHDOG FOR PUMP ROUTINE, ALSO DISABLE SLEEP.
     //code to send 'E' to rx unit will go here soon.
     distance_ = avgScan();
     
@@ -101,11 +101,23 @@ void loop() {
       distance_ = avgScan();
       
       if (distance_ > full){
+        //pump for three-five seconds
         //code to send 'F' to rx unit will go here soon.
       }
     }
   }
   else if(distance_ < empty){
+    
+    //SETUP WACHDOG TIMER.
+    WDTCSR = 24;              //CHANGE ENABLE(WDCE) BIT AND WDE BIT.
+    WDTCSR = 0x21;            //PRESCALER CHOICE - GET RID OF WDE AND WDCE.
+    WDTCSR |= (1<<6);         //ENABLE INTERRUPT MODE.
+    
+    //ENABLE SLEEP PENDING SLEEP INSTRUCTION.
+    SMCR |= (1<<2);           //POWERDOWN MODE.
+    SMCR |= 1;                //ENABLE SLEEP.
+    __asm__ __volatile("sei");
+    __asm__ __volatile__ ("sleep");//SLEEP INSTRUCTION.
     
     
     }
