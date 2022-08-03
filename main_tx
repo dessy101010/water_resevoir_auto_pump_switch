@@ -69,13 +69,8 @@ void setup() {
     pinMode(i, OUTPUT);
     }
   //DISABLE ADC.
-  ADCSRA = B01111111;       //CLEAR BIT ADC ENABLE.  //ADCSRA &= ~(1<<7);
+  ADCSRA = B01111111;       //CLEAR BIT ADC ENABLE.  //ADCSRA &= ~(1<<7)
 
-
-  //ENABLE SLEEP PENDING SLEEP INSTRUCTION.
-  SMCR |= (1<<2);           //POWERDOWN MODE.
-  SMCR |= 1;                //ENABLE SLEEP.
-  __asm__ __volatile("sei");
 
   
   //SETUP WACHDOG TIMER.
@@ -123,7 +118,6 @@ void loop() {
     //ENABLE SLEEP PENDING SLEEP INSTRUCTION.
     SMCR |= (1<<2);           //POWERDOWN MODE.
     SMCR |= 1;                //ENABLE SLEEP.
-    __asm__ __volatile("sei");
     __asm__ __volatile__ ("sleep");//SLEEP INSTRUCTION.
     
     
