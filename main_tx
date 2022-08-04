@@ -70,14 +70,6 @@ void setup() {
     }
   //DISABLE ADC.
   ADCSRA = B01111111;       //CLEAR BIT ADC ENABLE.  //ADCSRA &= ~(1<<7)
-
-
-  
-  //SETUP WACHDOG TIMER.
-  WDTCSR = 24;              //CHANGE ENABLE(WDCE) BIT AND WDE BIT.
-  WDTCSR = 0x21;            //PRESCALER CHOICE - GET RID OF WDE AND WDCE.
-  WDTCSR |= (1<<6);         //ENABLE INTERRUPT MODE.
-  
 }
 
 
@@ -91,8 +83,6 @@ void loop() {
   //wont pump water till the low mark.
   if (distance_ >= empty) {
   
-    WDTCSR = B00000000;          //DISABLE WATCHDOG FOR PUMP ROUTINE, ALSO DISABLE SLEEP.
-    SMCR = B00000000;
     
     //code to send 'E' to rx unit will go here soon.
     
@@ -118,7 +108,13 @@ void loop() {
     //ENABLE SLEEP PENDING SLEEP INSTRUCTION.
     SMCR |= (1<<2);           //POWERDOWN MODE.
     SMCR |= 1;                //ENABLE SLEEP.
-    __asm__ __volatile__ ("sleep");//SLEEP INSTRUCTION.
+    
+    /*BOD DISABLE. SLEEP INSTRUCTION HAS TO BE EXECUTD WITHIN NEXT THREE CLOCK CYCLES AFTER THIS BIT.
+    BOD TURNS BACK ON AUTOMATICALLY WITHIN 60 MICROSECS BEFORE MCU WAKES.*/
+    MCUCR |= (3<<5);                     //SET BOTH BODS AND BODSE, ONE MOVE.
+    MCUCR = (MCUCR & ~(1<<5)) | (1<<6);  //SET BODS BIT AND CLEAR BODSE BIT IN ONE MOVE.
+   
+    __asm__ __volatile__ ("sleep");      //SLEEP INSTRUCTION.
     
     
     }
