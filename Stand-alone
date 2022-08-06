@@ -1,1 +1,125 @@
-// code here.
+//initialize function one, sonicScan function.
+int sonicScan(int trig, int echo) {
+  
+  // initializations.
+  pinMode(trig, OUTPUT);
+  float duration;
+  float distance;
+
+  //sound propagation and detection.
+  delay(11);
+  digitalWrite(trig, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trig, LOW);
+
+  //processing.
+  duration = pulseIn(echo, HIGH);
+  //Serial.println(duration);
+  duration -= 5; // subtract irrelevant pulse time.
+  distance = (((340 * duration) * 100) / 2) / 1000000; // get distance,  convert to cm, divide by 2 to get actual distance, divide by one million to convert microsec to sec.
+  return round(distance - 1);
+  }
+
+
+
+//Initialize function two, average of three sonicScan, avgScan function.
+int avgScan() {
+
+  int trig_ = 2;
+  int echo_ = 3;
+  int distance1;
+  int distance2;
+  int distance3;
+  
+  // taking three distance reading, choosing by frequency.
+  distance1 = sonicScan(trig_, echo_);
+  delay(5);
+  distance2 = sonicScan(trig_, echo_);
+  delay(5);
+  distance3 = sonicScan(trig_, echo_);
+  return (distance1 + distance2 + distance3)/3;
+  }
+
+
+
+
+
+
+
+
+//main code.
+
+
+
+int distance_;
+String empty;
+String mid;
+String full;
+String sleep;
+
+
+
+void setup() {
+  Serial.begin(9600);
+  
+  //BIAS PINS TO SAVE POWER. PIN 3 INPUT(SONIC ECHO.)
+  for(int i=0; i<20; i++){
+    if (i != 3){
+    pinMode(i, OUTPUT);
+    }
+    else {
+    pinMode(i, INPUT);
+    }
+  }
+  
+  //DISABLE ADC.
+  ADCSRA = B01111111;       //CLEAR BIT ADC ENABLE.  //ADCSRA &= ~(1<<7)
+}
+
+
+
+
+void loop() {
+  
+  
+  distance_ = avgScan();
+
+  //wont pump water till the low mark.
+  if (distance_ >= empty) {
+
+    //code to send 'E' to rx unit will go here soon.
+    
+    distance_ = avgScan();
+    
+    if (distance_ >= mid) {
+      //code to switch send 'M' to rx unit will go here soon.
+      distance_ = avgScan();
+      
+      if (distance_ > full){
+        //pump for three-five seconds
+      }
+    }
+  }
+  else if(distance_ < empty){
+    
+    //SETUP WACHDOG TIMER.
+    WDTCSR = 24;              //CHANGE ENABLE(WDCE) BIT AND WDE BIT.
+    WDTCSR = 0x21;            //PRESCALER CHOICE - GET RID OF WDE AND WDCE.
+    WDTCSR |= (1<<6);         //ENABLE INTERRUPT MODE.
+    
+    //ENABLE SLEEP PENDING SLEEP INSTRUCTION.
+    SMCR |= (1<<2);           //POWERDOWN MODE.
+    SMCR |= 1;                //ENABLE SLEEP.
+    
+    /*BOD DISABLE. SLEEP INSTRUCTION HAS TO BE EXECUTD WITHIN NEXT THREE CLOCK CYCLES AFTER THIS BIT.
+    BOD TURNS BACK ON AUTOMATICALLY WITHIN 60 MICROSECS BEFORE MCU WAKES.*/
+    MCUCR |= (3<<5);                     //SET BOTH BODS AND BODSE, ONE MOVE.
+    MCUCR = (MCUCR & ~(1<<5)) | (1<<6);  //SET BODS BIT AND CLEAR BODSE BIT IN ONE MOVE.
+   
+    __asm__ __volatile__ ("sleep");      //SLEEP INSTRUCTION.
+    
+    
+    }
+}
