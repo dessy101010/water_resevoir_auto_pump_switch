@@ -53,11 +53,9 @@ int avgScan() {
 
 
 
-int distance_;
-String empty;
-String mid;
-String full;
-String sleep;
+byte distance_;
+byte relay = 4;
+
 
 
 
@@ -88,21 +86,33 @@ void loop() {
 
   //wont pump water till the low mark.
   if (distance_ >= empty) {
-
-    //code to send 'E' to rx unit will go here soon.
+    
+    digitalWRite(relay, 1);
+    delay();  //pump time from empty to mid.
+    digitalWrite(relay, 0);
+    
     
     distance_ = avgScan();
     
     if (distance_ >= mid) {
-      //code to switch send 'M' to rx unit will go here soon.
+    
+      
+      digitalWRite(relay, 1);
+      delay();  //pump time from mid to full.
+      digitalWrite(relay, 0);
+      
       distance_ = avgScan();
       
       if (distance_ > full){
-        //pump for three-five seconds
+      
+        digitalWRite(relay, 1);
+        delay();  //pump time to completely fill.
+        digitalWrite(relay, 0);
+        
       }
     }
   }
-  else if(distance_ < empty){
+  else if(distance_ < empty) {
     
     //SETUP WACHDOG TIMER.
     WDTCSR = 24;              //CHANGE ENABLE(WDCE) BIT AND WDE BIT.
