@@ -35,9 +35,9 @@ int avgScan() {
   
   // taking three distance reading, choosing by frequency.
   distance1 = sonicScan(trig_, echo_);
-  delay(5);
+  delay(1);
   distance2 = sonicScan(trig_, echo_);
-  delay(5);
+  delay(1);
   distance3 = sonicScan(trig_, echo_);
   return (distance1 + distance2 + distance3)/3;
   }
@@ -55,8 +55,8 @@ int avgScan() {
 
 byte distance_;
 byte relay = 4;
-#define empty 100
-#define mid 50
+#define empty 80
+#define mid 45
 #define full 10
 
 
