@@ -85,7 +85,7 @@ void setup() {
 void loop() {
   
 
-  delay(5000);                   // give water time to settle; accurate reading.                  
+  delay(7000);                   // give water time to settle before scan; accurate reading.                  
   distance_ = avgScan() - 4 ;    //extra to compensate. 
 
   //wont pump water till the low mark.
@@ -95,7 +95,7 @@ void loop() {
     delay(0);                          //pump time from empty to mid.
     digitalWrite(relay, 0);
     
-    delay(5000);                       // give water time to settle; accurate reading.
+    delay(7000);                       // give water time to settle before scan; accurate reading.
     distance_ = avgScan();
     
     if (distance_ >= mid) {
@@ -105,7 +105,7 @@ void loop() {
       delay(0);                        //pump time from mid to full.
       digitalWrite(relay, 0);
       
-      delay(5000);                     // give water time to settle; accurate reading.
+      delay(7000);                     // give water time to settle before scan; accurate reading.
       distance_ = avgScan();
       
       if (distance_ > full){
