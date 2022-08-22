@@ -55,9 +55,9 @@ int avgScan() {
 
 byte distance_;
 byte relay = 4;
-#define empty 80
-#define mid 45
-#define full 10
+#define empty 70
+#define mid 43
+#define full 5
 
 
 
