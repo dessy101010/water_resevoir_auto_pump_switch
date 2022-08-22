@@ -92,7 +92,7 @@ void loop() {
   if (distance_ >= empty) {
     
     digitalWrite(relay, 1);
-    delay(0);                          //pump time from empty to mid.
+    delay(88000);                          //pump time from empty to mid. There's some subtracted time, this ensures that the level is low enough for the next for loop.
     digitalWrite(relay, 0);
     
     delay(7000);                       // give water time to settle before scan; accurate reading.
@@ -102,7 +102,7 @@ void loop() {
     
       
       digitalWrite(relay, 1);
-      delay(0);                        //pump time from mid to full.
+      delay(245000);                        //pump time from mid to full.
       digitalWrite(relay, 0);
       
       delay(7000);                     // give water time to settle before scan; accurate reading.
@@ -111,7 +111,7 @@ void loop() {
       if (distance_ > full){
       
         digitalWrite(relay, 1);
-        delay(0);                      //pump time to completely fill.
+        delay(40000);                      //pump time to completely fill.
         digitalWrite(relay, 0);
         
       }
